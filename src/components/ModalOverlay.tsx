@@ -1,4 +1,6 @@
 import { X } from "lucide-react";
+import { useRef, useEffect } from "react";
+import { Confetti } from "./Confetti";
 
 interface ModalOverlayProps {
   selectedItem: { text: string };
@@ -6,11 +8,26 @@ interface ModalOverlayProps {
 }
 
 export function ModalOverlay({ selectedItem, onClose }: ModalOverlayProps) {
+  const winAudio = useRef(new Audio("/win.mp3"));
+
+  useEffect(() => {
+    winAudio.current.volume = 0.8;
+  }, []);
+
+  useEffect(() => {
+    if (selectedItem) {
+      winAudio.current.currentTime = 0;
+      winAudio.current.play().catch(() => {});
+    }
+  }, [selectedItem]);
+
   return (
     <div
       className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 background-blur-xs"
       onClick={onClose}
     >
+      <Confetti />
+
       <div
         className="relative bg-white rounded-2xl shadow-2xl p-10 w-150 h-50 text-center transform transition-all"
         onClick={(e) => e.stopPropagation()}
@@ -26,7 +43,7 @@ export function ModalOverlay({ selectedItem, onClose }: ModalOverlayProps) {
           <h2 className="text-lg font-bold text-gray-800 mb-3">
             O Filme Sorteado foi:
           </h2>
-          <p className="text-4xl font-bold text-gray-800 mt-4">
+          <p className="text-4xl font-black text-gray-800 mt-4">
             {selectedItem.text}
           </p>
         </div>

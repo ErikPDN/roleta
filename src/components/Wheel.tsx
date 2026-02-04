@@ -21,9 +21,9 @@ const COLORS = [
 
 export function Wheel() {
   const [items, setItems] = useState<WheelProps[]>([
-    { id: "1", text: "Inception", color: COLORS[0] },
-    { id: "2", text: "The Dark Knight", color: COLORS[1] },
-    { id: "3", text: "Interstellar", color: COLORS[2] },
+    { id: "1", text: "Ilha do Medo", color: COLORS[0] },
+    { id: "2", text: "O Poço", color: COLORS[1] },
+    { id: "3", text: "Parasita", color: COLORS[2] },
   ]);
 
   const [newItem, setNewItem] = useState("");
@@ -33,19 +33,6 @@ export function Wheel() {
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const animationRef = useRef<number | null>(null);
-
-  const winAudio = useRef(new Audio("/win.mp3"));
-
-  useEffect(() => {
-    winAudio.current.volume = 0.8;
-  }, []);
-
-  useEffect(() => {
-    if (selectedItem) {
-      winAudio.current.currentTime = 0;
-      winAudio.current.play().catch(() => {});
-    }
-  }, [selectedItem]);
 
   // Desenha roleta
   useEffect(() => {
