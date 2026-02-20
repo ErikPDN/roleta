@@ -166,7 +166,7 @@ export function Wheel() {
   return (
     <div className="min-h-screen bg-linear-to-br from-purple-50 to-blue-50 flex flex-col">
       <div className="top-0 left-0 right-0 z-40 h-14 md:h-20 flex items-center justify-center bg-purple-50/80 backdrop-blur-sm">
-        <h1 className="text-2xl mt-8 md:text-4xl xl:text-5xl font-bold text-gray-800">
+        <h1 className="text-xl mt-8 md:text-4xl xl:text-5xl xl:mt-14 2xl:text-6xl font-bold text-gray-800">
           Roleta de Filmes
         </h1>
       </div>
@@ -191,13 +191,13 @@ export function Wheel() {
                 ref={canvasRef}
                 width={600}
                 height={600}
-                className="drop-shadow-2xl w-72 h-72 sm:w-96 sm:h-96 md:w-110 md:h-110 lg:w-130 lg:h-130 xl:w-160 xl:h-160 2xl:w-190 2xl:h-190"
+                className="drop-shadow-2xl w-60 h-60 sm:w-60 sm:h-60 md:w-90 md:h-90 lg:w-110 lg:h-110 2xl:w-150 2xl:h-150"
               />
             </div>
           </div>
 
           {/* Controles */}
-          <div className="bg-white rounded-xl shadow-lg p-6 xl:p-8 w-full sm:w-96 xl:w-[420px] 2xl:w-[500px] shrink-0">
+          <div className="bg-white rounded-xl shadow-lg p-6 xl:p-8 sm:w-84 xl:w-110 shrink-0">
             <h2 className="text-xl font-bold text-gray-800 mb-4">
               Opções da Roleta
             </h2>
@@ -227,7 +227,7 @@ export function Wheel() {
             </div>
 
             {/* Lista de Itens */}
-            <div className="space-y-2 max-h-64 md:max-h-80 xl:max-h-[28rem] 2xl:max-h-[36rem] overflow-y-auto">
+            <div className="space-y-2 max-h-64 md:max-h-80 overflow-y-auto">
               <p className="text-sm font-medium text-gray-700 mb-2">Filmes</p>
               {items.map((item) => (
                 <div
