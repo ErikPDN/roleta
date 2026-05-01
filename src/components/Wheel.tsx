@@ -43,7 +43,7 @@ export function Wheel() {
   const lastSliceIndexRef = useRef<number | null>(null);
 
   const playWheelAudio = () => {
-    wheelAudio.current.volume = 0.5;
+    wheelAudio.current.volume = 0.2;
     wheelAudio.current.currentTime = 0;
     wheelAudio.current.play().catch(() => {});
   }
