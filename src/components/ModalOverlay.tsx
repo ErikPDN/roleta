@@ -11,11 +11,12 @@ export function ModalOverlay({ selectedItem, onClose }: ModalOverlayProps) {
   const winAudio = useRef(new Audio("/win.mp3"));
 
   useEffect(() => {
-    winAudio.current.volume = 0.8;
+    
   }, []);
 
   useEffect(() => {
     if (selectedItem) {
+      winAudio.current.volume = 0.8;
       winAudio.current.currentTime = 0;
       winAudio.current.play().catch(() => {});
     }

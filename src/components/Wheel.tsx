@@ -9,21 +9,27 @@ interface WheelProps {
 
 // TODO: Pegar cor randomica de uma paleta
 const COLORS = [
+  "#34D399",
+  "#A78BFA",
+  "#14B8A6",
+  "#FACC15",
+  "#EC4899",
+  "#F97316",
+  "#107bb9",
+  "#F43F5E",
+];
+
+const INITIAL_COLORS = [
   "#60A5FA",
   "#F87171",
   "#FB923C",
-  "#34D399",
-  "#A78BFA",
-  "#FACC15",
-  "#EC4899",
-  "#14B8A6",
-];
+]
 
 export function Wheel() {
   const [items, setItems] = useState<WheelProps[]>([
-    { id: "1", text: "Ilha do Medo", color: COLORS[0] },
-    { id: "2", text: "O Poço", color: COLORS[1] },
-    { id: "3", text: "Parasita", color: COLORS[2] },
+    { id: "1", text: "Ilha do Medo", color: INITIAL_COLORS[0] },
+    { id: "2", text: "O Poço", color: INITIAL_COLORS[1] },
+    { id: "3", text: "Parasita", color: INITIAL_COLORS[2] },
   ]);
 
   const [newItem, setNewItem] = useState("");
@@ -32,7 +38,15 @@ export function Wheel() {
   const [selectedItem, setSelectedItem] = useState<WheelProps | null>(null);
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const animationRef = useRef<number | null>(null);
+  const animationRef = useRef<number | null>(null); 
+  const wheelAudio = useRef(new Audio("/wheel_scroll_3.wav"));
+  const lastSliceIndexRef = useRef<number | null>(null);
+
+  const playWheelAudio = () => {
+    wheelAudio.current.volume = 0.5;
+    wheelAudio.current.currentTime = 0;
+    wheelAudio.current.play().catch(() => {});
+  }
 
   // Desenha roleta
   useEffect(() => {
@@ -117,6 +131,7 @@ export function Wheel() {
 
     setIsSpinning(true);
     setSelectedItem(null);
+    lastSliceIndexRef.current = null;
 
     const minSpins = 5;
     const maxSpins = 8;
@@ -126,6 +141,12 @@ export function Wheel() {
     const duration = 4000;
     const startTime = Date.now();
     const initialRotation = rotation;
+    const sliceAngle = 360 / items.length;
+
+    const getSliceIndex = (currentRotation: number) => {
+      const normalizedRotation = (360 - (currentRotation % 360) + 270) % 360;
+      return Math.floor(normalizedRotation / sliceAngle) % items.length;
+    };
 
     const animate = () => {
       const now = Date.now();
@@ -138,17 +159,20 @@ export function Wheel() {
 
       setRotation(currentRotation % 360);
 
+      const currentSliceIndex = getSliceIndex(currentRotation);
+      if (lastSliceIndexRef.current !== currentSliceIndex) {
+        if (lastSliceIndexRef.current !== null) {
+          playWheelAudio();
+        }
+        lastSliceIndexRef.current = currentSliceIndex;
+      }
+
       if (progress < 1) {
         animationRef.current = requestAnimationFrame(animate);
       } else {
         // TODO: Adicionar confetti ao finalizar
         setIsSpinning(false);
-        const finalNormalizedRotation =
-          (360 - (currentRotation % 360) + 270) % 360;
-        const sliceAngle = 360 / items.length;
-        const selectedIndex =
-          Math.floor(finalNormalizedRotation / sliceAngle) % items.length;
-        setSelectedItem(items[selectedIndex]);
+        setSelectedItem(items[currentSliceIndex]);
       }
     };
 
